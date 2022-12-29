@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>THE SAN</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js";
+    import { getDatabase, ref, set, push, update, remove, onChildAdded } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js";
+
+    window.onload = function () {
+      var firebaseConfig = {
+        apiKey: "AIzaSyAKnu2oNuVVy5pQ-ElYrhU9Cg0IUqOTUTQ",
+        authDomain: "javaproject-d4dc7.firebaseapp.com",
+        databaseURL: "https://javaproject-d4dc7-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "javaproject-d4dc7",
+        storageBucket: "javaproject-d4dc7.appspot.com",
+        messagingSenderId: "843032949229",
+        appId: "1:843032949229:web:20415adf7ce21d477977e4",
+        measurementId: "G-YJHVP2W1K0"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = ref(getDatabase(), 'users/');
+      const $tableref = document.getElementById("displayTable");
+
+
+      onChildAdded(database, (data) => {
+        let childData = data.val();
+
+        let $td1 = document.createElement('td')
+        let $td2 = document.createElement('td')
+        let $td3 = document.createElement('td')
+
+        $td1.appendChild(document.createTextNode(childData.username))
+        $td2.appendChild(document.createTextNode(childData.email))
+        $td3.appendChild(document.createTextNode(childData.profile_picture))
+
+
+        let $td4 = document.createElement('td')
+        let deleteIconUI = document.createElement("a");
+        deleteIconUI.className += "glyphicon glyphicon-trash detete-button";
+
+
+        deleteIconUI.setAttribute("userid", data.key);
+        deleteIconUI.setAttribute("id", data.key);
+        deleteIconUI.setAttribute("onClick", "window.location.reload()");
+        deleteIconUI.addEventListener("click", deleteButtonClicked, false);
+        $td4.appendChild(deleteIconUI);
+
+        let $tr = document.createElement('tr');
+        $tr.setAttribute("id", data.key);
+        $tr.appendChild($td1)
+        $tr.appendChild($td2)
+        $tr.appendChild($td3)
+        $tr.appendChild($td4)
+
+        $tableref.appendChild($tr)
+      });
+      //---------------------------------delete-------------------------------------
+      /// create delete function
+      function deleteButtonClicked(e) {
+
+        /// get data id which selected by user
+        var userID = this.getAttribute("userid");
+
+        /// delete that data from database
+        remove(ref(getDatabase(), 'users/' + userID));
+
+      }
+
+      /// create insert button
+      const addUserBtnUI = document.getElementById("add-user-btn");
+      addUserBtnUI.addEventListener("click", addUserBtnClicked);
+
+      /// create function for data insertion
+      function addUserBtnClicked() {
+
+        const addUserInputsUI = document.getElementsByClassName("user-input");
+
+        // this object will hold the new user information
+        let newUser = {};
+
+        // loop through View to get the data for the model 
+        for (let i = 0, len = addUserInputsUI.length; i < len; i++) {
+          /// get data from html form using attribute name
+          let key = addUserInputsUI[i].getAttribute('data-key');
+          let value = addUserInputsUI[i].value;
+          newUser[key] = value;
+        }
+
+        const userListRef = ref(getDatabase(), 'users');
+        const newUserRef = push(userListRef);
+        set(newUserRef, newUser);
+
+      }
+    }
+  </script> <!-- From -->
+
+</head>
+
+<style>
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .w3-wide {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+  }
+
+  .jumbotron {
+    background-color: black;
+    color: #fff;
+
+  }
+
+  .panel {
+    border: 1px solid #f4511e;
+    border-radius: 0 !important;
+    transition: box-shadow 0.5s;
+  }
+
+  .panel:hover {
+    box-shadow: 5px 0px 40px rgba(0, 0, 0, .2);
+  }
+
+  .panel-footer .btn:hover {
+    border: 1px solid #f4511e;
+    background-color: #fff !important;
+    color: #f4511e;
+  }
+
+  .panel-heading {
+    color: #fff !important;
+    background-color: #f4511e !important;
+    padding: 25px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .panel-footer {
+    background-color: white !important;
+  }
+
+  .panel-footer h3 {
+    font-size: 32px;
+  }
+
+  .panel-footer h4 {
+    color: #aaa;
+    font-size: 14px;
+  }
+
+  .panel-footer .btn {
+    margin: 15px 0;
+    background-color: #f4511e;
+    color: #fff;
+  }
+
+  @media screen and (max-width: 768px) {
+    .col-sm-4 {
+      text-align: center;
+      margin: 25px 0;
+    }
+  }
+
+  .logo {
+    font-size: 200px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .col-sm-4 {
+      text-align: center;
+      margin: 25px 0;
+    }
+  }
+
+  .nav-tabs li a {
+    color: #777;
+  }
+
+  /* Add a dark background color to the footer */
+  footer {
+    background-color: #2d2d30;
+    color: #f5f5f5;
+    padding: 32px;
+  }
+
+  footer a {
+    color: #f5f5f5;
+  }
+
+  footer a:hover {
+    color: #777;
+    text-decoration: none;
+  }
+</style>
+
+
+
+<body class="w3-content" style="max-width:1300px">
+
+  <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+    <div class="w3-container w3-display-container w3-padding-16">
+      <br><br>
+      <h3 class="w3-wide"><b>THE SAN</b></h3>
+    </div>
+
+    <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+      <br>
+      <a href="index.html" class="w3-button w3-block w3-white w3-left-align" id="myBtn"> HOME </a> <br>
+      <a href="#con" class="w3-button w3-block w3-white w3-left-align" id="myBtn"> CONTACT </a> <br>
+      <a href="#gg" class="w3-button w3-block w3-white w3-left-align" id="myBtn"> แหล่งข้อมูล </a> <br>
+      <a href="#job" class="w3-button w3-block w3-white w3-left-align" id="myBtn"> การทำงาน </a>
+
+    </div>
+  </nav>
+
+</body>
+
+
+
+<!-- เว้นย่อหน้าของแถบ  -->
+<div class="w3-main" style="margin-left:250px">
+
+  <!---->
+  <nav class="navbar navbar-inverse">
+
+
+    <div class="jumbotron text-center">
+
+      <h1>THE SAN</h1>
+      <p>Welocome to THE SAN shop. <span class="glyphicon glyphicon-shopping-cart"></span></p>
+      <form class="form-inline">
+        <div class="input-group">
+          <input class="form-control" size="50" placeholder="The SAN" required>
+          <div class="input-group-btn">
+            <a href="index.html"><button type="button" class="btn btn-danger">Search</button></a>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <img src="Ban.jpg" width="1200" height="600">
+        </div>
+
+        <div class="item">
+          <img src="Ban1.jpg" width="1200" height="600">
+        </div>
+
+        <div class="item">
+          <img src="Ban2.jpg" width="1200" height="600">
+        </div>
+
+      </div>
+      <!-- Left and right controls -->
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+  </nav>
+
+  <!---->
+  <div class="container">
+    <a href="index.html"><button type="button" class="btn btn-warning btn-lg">ยอดนิยม</button></a>
+    <a href="index.html"><button type="button" class="btn btn-info btn-lg">แนะนำสำหรับคุณ</button> </a>
+  </div>
+
+  <!---->
+  <div class="container text-center">
+    <br><br>
+    <h3>#หมวดหมู่</h3>
+
+    <br><br>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <a href="shirt.html"><img src="S1.jpg" class="img-circle person" alt="Random Name" width="120" height="120">
+          <h4>เสื้อยืด</h4>
+        </a>
+      </div>
+
+      <div class="col-sm-4">
+        <a href="Trousers.html"><img src="J1.jpg" class="img-circle person" alt="Random Name" width="120" height="130">
+          <h4>กางเกง
+        </a></h4>
+      </div>
+
+      <div class="col-sm-4">
+        <a href="Coat.html"> <img src="H1.jpg" class="img-circle person" alt="Random Name" width="120" height="120">
+          <h4>เสื้อกันหนาว
+        </a></h4>
+      </div>
+    </div>
+
+    <br><br>
+    <div class="row">
+      <div class="col-sm-4">
+        <a href="Choeshoes.html"><img src="T1.jpg" class="img-circle person" alt="Random Name" width="120" height="120">
+          <h4> รองเท้าผ้าใบ
+        </a></h4>
+      </div>
+
+      <div class="col-sm-4">
+        <a href="Sandals.html"> <img src="R1.jpg" class="img-circle person" alt="Random Name" width="120" height="120">
+          <h4>รองเท้าแตะ
+        </a></h4>
+
+      </div>
+
+
+      <div class="col-sm-4">
+        <a href="Decorations.html"><img src="D1.jpg" class="img-circle person" alt="Random Name" width="120"
+            height="120">
+          <h4> เครื่องประดับ
+        </a></h4>
+
+      </div>
+    </div>
+
+    <br><br>
+    <div class="row">
+      <div class="col-sm-4">
+        <a href="Bag.html"><img src="P1.jpg" class="img-circle person" alt="Random Name" width="120" height="120">
+          <h4> กระเป๋า
+        </a></h4>
+
+      </div>
+    </div>
+
+  </div>
+  <!---->
+  <br><br>
+  <!---->
+  <div class="row">
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel panel-default text-center">
+        <div class="panel-heading">
+          <h1>PAYDAY SALE</h1>
+        </div>
+        <div class="panel-body">
+          <h3><strong>ส่งฟรี ขั้นต่ำ 0 บาท</strong></h3>
+
+          <p> วันนี้เพียงวันเดียว </p>
+        </div>
+        <div class="panel-footer">
+          <h3>$0</h3>
+
+          <a href="index.html"><button class="btn btn-lg">ช้อปเลย<span
+                class="glyphicon glyphicon-chevron-right"></span></button></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel panel-default text-center">
+        <div class="panel-heading">
+          <h1>TRENDING NOW</h1>
+        </div>
+
+        <div class="panel-footer">
+          <h3>เสื้อยืด $</h3>
+          <h3>เครื่องประดับ $</h3>
+          <a href="Decorations.html"><button class="btn btn-lg">Shop</button></a>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel panel-default text-center">
+        <div class="panel-heading">
+          <h1>PROMOTE</h1>
+        </div>
+        <div class="panel-body">
+          <p><strong>เสื้อยืด</strong> + </p>
+          <p><strong>กางเกงยีน </strong> + </p>
+          <p><strong>เครื่องประดับ </strong> </p>
+          <p><strong>ซื้อครบ 999 บาท</strong> </p>
+
+        </div>
+        <div class="panel-footer">
+          <h3>ส่งฟรี</h3>
+          <h4>ทั่วประเทศ</h4>
+          <a href="shirt.html"><button class="btn btn-lg">กดเลย</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!---->
+  <br><br><br>
+
+  <!-- Container (About Section) -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-8">
+        <h2>Various Styles</h2>
+        <h4><strong>แฟชั่น : </strong>สไตล์สตรีต</h4>
+        <h4><strong>แฟชั่น : </strong>สไตล์ลุย ๆ สบาย ๆ</h4>
+        <h4><strong>แฟชั่น : </strong>ลุคเท่</h4>
+
+
+      </div>
+      <div class="col-sm-4">
+
+        <span class="glyphicon glyphicon-shopping-cart logo"></span>
+
+
+      </div>
+    </div>
+    <br><br><br>
+    <div class="container-fluid bg-grey">
+      <div class="row">
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-gift logo"></span>
+        </div>
+        <div class="col-sm-8">
+          <h2>GIFT</h2>
+          <h4>ได้ทั้งของขวัญและสไตล์การแต่งตัว</h4>
+          <p>Gift from us.</p>
+        </div>
+      </div>
+    </div>
+
+    <br><br><br>
+
+    <div class="row">
+      <div class="col-sm-8">
+        <h2>SELL</h2>
+        <h4><strong>ส่วนลด : </strong> มีส่วนลดมากมายให้คุณ</h4>
+
+      </div>
+      <div class="col-sm-4">
+
+        <span class="glyphicon glyphicon-usd logo"></span>
+
+
+      </div>
+    </div>
+
+    <!--Container (About Section) --->
+
+    <!-- From -->
+
+    <br><br>
+    <div class="alert alert-warning alert-dismissible">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>ลุ้นรับของรางวัล</strong>
+    </div>
+
+    <div class="container">
+      <div class="page-header">
+        <h1><span class="glyphicon glyphicon-hand-down"></span>ลงชื่อลุ้นรับของรางวัล </h1>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ชื่อผู้ใช้</th>
+            <th>ชื่อเล่น</th>
+            <th>E-mail</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="displayTable">
+        </tbody>
+      </table>
+
+      <section id="add-user-module">
+        <form>
+          <hr>
+
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="input" data-key='username' class="form-control user-input" id="myInput">
+          </div>
+          <div class="form-group">
+            <label for="email">ชื่อเล่น:</label>
+            <input type="email" data-key='email' class="form-control user-input" id="myInput">
+          </div>
+          <div class="form-group">
+            <label for="profile_picture">E-mail:</label>
+            <input type="input" data-key='profile_picture' class="form-control user-input" id="myInput">
+          </div>
+          <button type='button' class="btn btn-default" id="add-user-btn">Add</button>
+        </form>
+      </section>
+    </div>
+    <!--Stop From -->
+
+    <br>
+    <!----->
+    <div id="con">
+      <div class="container-fluid bg-grey">
+        <h2 class="text-center">CONTACT</h2>
+        <div class="row">
+          <div class="col-sm-5">
+            <p>ข้อมูลติดต่อ</p>
+            <p><i class="fa fa-fw fa-map-marker"></i> Chutaphon</p>
+            <p><i class="fa fa-fw fa-phone"></i> 0624495451 </p>
+            <p><a href="https://line.me/ti/p/1KsQZCrGxm"><i class="glyphicon glyphicon-qrcode"> ID </a></i> </p>
+            <p><i class="fa fa-fw fa-envelope"></i> 6310110287@psu.ac.th</p>
+            <p><span class="glyphicon glyphicon-envelope"></span> Pakaporn.Ramcharoen@gmail.com</p>
+            <p><a href="https://www.facebook.com/luggad.pagapron.5"> <i
+                  class="fa fa-facebook-official w3-hover-opacity w3-large"> Pakaporn Ramcharoen </a></i></p>
+            <p><a href="https://www.instagram.com/luggad_pkp/"> <i class="fa fa-instagram w3-hover-opacity w3-large">
+                  luggad_pkp </a></i> </p>
+
+
+
+            <p><i class="fa fa-twitter w3-hover-opacity w3-large"> Llllllyu </a></i></p>
+
+
+          </div>
+
+
+          <div class="col-sm-7">
+            <div class="row">
+              <div class="col-sm-6 form-group">
+                <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+              </div>
+              <div class="col-sm-6 form-group">
+                <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+              </div>
+            </div>
+            <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea><br>
+            <div class="row">
+              <div class="col-sm-12 form-group">
+                <button class="btn btn-default pull-right" type="submit">Send</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+    <!----->
+    <br>
+    <!----->
+    <div class="container">
+      <button type="button" class="btn btn-info btn-block"></button>
+    </div>
+    <!----->
+
+    <br><br>
+    <!----->
+    <div id="gg">
+      <h3 class="text-center">แหล่งข้อมูล</h3>
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">รูปแบบ</a></li>
+        <li><a data-toggle="tab" href="#menu1">แหล่งข้อมูลเสื้อผ้า</a></li>
+        <li><a data-toggle="tab" href="#menu2">แนวคิด</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+          <h2>รูปแบบการออกแบบเว็บ </h2>
+          <p>ศึกษารูปแบบการทำงานในเว็บ </p>
+          <p><a href="https://www.w3schools.com/bootstrap/bootstrap_theme_band.asp#myPage" data-toggle="tooltip"
+              title="Visit w3schools"> www.w3schools.com/bootstrap/bootstrap_theme_band.</a></p>
+          <p><a href="https://www.w3schools.com/html/default.asp" data-toggle="tooltip" title="Visit w3schools">
+              https:www.w3schools.com/default.asp</a></p>
+          <p><a href="https://www.w3schools.com/js/default.asp" data-toggle="tooltip" title="Visit w3schools">
+              https:www.w3schools.com/js/default.asp</a></p>
+          <p><a href="https://www.w3schools.com/jquery/default.asp" data-toggle="tooltip"
+              title="Visit w3schools">https:www.w3schools.com/jquery/default.asp</a></p>
+
+        </div>
+        <div id="menu1" class="tab-pane fade">
+          <h2>ข้อมูลเสื้อผ้า</h2>
+
+          <p> ข้อมูลเสื้อผ้า <a href="https://th.shein.com/" data-toggle="tooltip" title="Visit w3schools">
+              https:th.shein.com</a></p>
+
+          <p> รูปภาพ <a href="https://www.pinterest.com/" data-toggle="tooltip" title="Visit w3schools">
+              https:www.pinterest.com</a></p>
+        </div>
+
+        <div id="menu2" class="tab-pane fade">
+          <h2>แนวคิด</h2>
+          <p> เกิดจากการที่ หนูชอบในเรื่องของเสื้อผ้า และหนูคิดว่าในอนาคตจะเปิดแบร์น ชื่อ The SAN
+            หนูก็เลยนำสิ่งที่หนูจะทำในอนคตนำมาสร้างเว็บนี้ขึ้นมา</p>
+        </div>
+
+      </div>
+    </div>
+    <!----->
+    <br><br><br>
+
+    <!----->
+
+    <div id="job">
+
+      <footer class="text-center">
+        <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
+          <span class="glyphicon glyphicon-chevron-up"></span>
+        </a><br><br>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">การทำงาน</button>
+
+      </footer>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">การทำงานของเว็บ</h4>
+          </div>
+          <div class="modal-body">
+            <p>1. เป็นเว็บในการเลือกซื้อเสื้อผ้า </p>
+            <p>2. จะมีแทบให้เลือกซื้อสิ้นค้าว่าต้องการแบบไหน มีทั้ง
+              เสื้อยืด,กางเกง,เสื้อกันหนาว,รองเท้า,เครื่องประดับ,กระเป๋า โดยสามารถกดเข้าไปดูสินค้าได้
+              จะมีสิ้นค้ามากมายให้เลือกซื้อ</p>
+            <p>3. ในแต่ละสินค้าจะมี ราคา และ Code ถ้าต้องการซื้อสิ้นค้าให้กดไปที่ Buy จะขึึ้นแถบให้ใส่ Code
+              และจำนวนสิ้นค้าที่จะซื้อ และกดสั่งซื้อ</p>
+            <p>4. ในหน้า Home จะมีแถบสำหรับให้ลงชื่อเพื่ือลุ้นรับของรางวัล</p>
+            <p>5. มีแถบสำหรับเอาไว้ติดต่อถ้าเกิดมีปัญหา</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <!----->
+  </div>
+
+  <br><br><br>
+
+
+
+
+
+
+
+</html>
