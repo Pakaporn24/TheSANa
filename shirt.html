@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>CHIRT</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+</head>
+
+<style>
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .w3-wide {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+  }
+
+  .jumbotron {
+    background-color: black;
+    color: #fff;
+
+  }
+
+  .panel {
+    border: 1px solid #f4511e;
+    border-radius: 0 !important;
+    transition: box-shadow 0.5s;
+  }
+
+  .panel:hover {
+    box-shadow: 5px 0px 40px rgba(0, 0, 0, .2);
+  }
+
+  .panel-footer .btn:hover {
+    border: 1px solid #f4511e;
+    background-color: #fff !important;
+    color: #f4511e;
+  }
+
+  .panel-heading {
+    color: #fff !important;
+    background-color: #f4511e !important;
+    padding: 25px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .panel-footer {
+    background-color: white !important;
+  }
+
+  .panel-footer h3 {
+    font-size: 32px;
+  }
+
+  .panel-footer h4 {
+    color: #aaa;
+    font-size: 14px;
+  }
+
+  .panel-footer .btn {
+    margin: 15px 0;
+    background-color: #f4511e;
+    color: #fff;
+
+  }
+
+  @media screen and (max-width: 768px) {
+    .col-sm-4 {
+      text-align: center;
+      margin: 25px 0;
+    }
+  }
+
+  .logo {
+    font-size: 200px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .col-sm-4 {
+      text-align: center;
+      margin: 25px 0;
+    }
+  }
+
+  .nav-tabs li a {
+    color: #777;
+  }
+
+  /* Add a dark background color to the footer */
+  footer {
+    background-color: #2d2d30;
+    color: #f5f5f5;
+    padding: 32px;
+  }
+
+  footer a {
+    color: #f5f5f5;
+  }
+
+  footer a:hover {
+    color: #777;
+    text-decoration: none;
+  }
+
+  /* Add a dark gray background color to the modal header and center text */
+  .modal-header,
+  h4,
+  .close {
+    background-color: #333;
+    color: #fff !important;
+    text-align: center;
+    font-size: 30px;
+  }
+
+  .modal-header,
+  .modal-body {
+    padding: 40px 50px;
+  }
+
+
+  /* Add a dark gray background color to the modal header and center text */
+  .modal-header,
+  h4,
+  .close {
+    background-color: #333;
+    color: #fff !important;
+    text-align: center;
+    font-size: 30px;
+  }
+
+  .modal-header,
+  .modal-body {
+    padding: 40px 50px;
+  }
+
+  /* Black buttons with extra padding and without rounded borders */
+
+  .btn {
+    padding: 10px 20px;
+    background-color: rgb(209, 0, 0);
+    color: #f1f1f1;
+    border-radius: 0;
+    transition: .2s;
+  }
+</style>
+
+
+
+<body class="w3-content" style="max-width:1300px">
+
+  <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+    <div class="w3-container w3-display-container w3-padding-16">
+      <br><br>
+      <h3 class="w3-wide"><b>THE SAN</b></h3>
+    </div>
+
+    <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+      <br>
+      <a href="index.html" class="w3-button w3-block w3-white w3-left-align" id="myBtn"> HOME </a> <br>
+      <a href="#con" class="w3-button w3-block w3-white w3-left-align" id="myBtn"> มาใหม่ </a> <br>
+      <a href="#gg" class="w3-button w3-block w3-white w3-left-align" id="myBtn"> ยอดนิยม </a> <br>
+      <a href="#job" class="w3-button w3-block w3-white w3-left-align" id="myBtn"> SALL </a>
+
+    </div>
+  </nav>
+
+</body>
+
+
+
+<!-- เว้นย่อหน้าของแถบ  -->
+<div class="w3-main" style="margin-left:250px">
+
+  <!---->
+  <nav class="navbar navbar-inverse">
+
+
+    <div class="jumbotron text-center">
+
+      <h1>THE SAN</h1>
+      <p>Welocome to THE SAN shop. <span class="glyphicon glyphicon-shopping-cart"></span></p>
+      <form class="form-inline">
+        <div class="input-group">
+          <input class="form-control" size="50" placeholder="The SAN" required>
+          <div class="input-group-btn">
+            <a href="index.html"><button type="button" class="btn btn-danger">Search</button></a>
+          </div>
+        </div>
+      </form>
+
+
+    </div>
+
+
+
+  </nav>
+
+  <!---->
+  <div class="container">
+    <a href="index.html"><button type="button" class="btn btn-warning btn-lg">ยอดนิยม</button></a>
+    <a href="index.html"><button type="button" class="btn btn-info btn-lg">แนะนำสำหรับคุณ</button> </a>
+  </div>
+
+  <!---->
+  <div class="container text-center">
+    <br><br>
+    <h3>#เสื้อยืด</h3>
+
+    <br><br>
+    <div class="row text-center">
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M1_280.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$280</strong></p>
+          <p>Code #MM1</p>
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M2_150.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$150</strong></p>
+          <p>Code #MM2</p>
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M3_310.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$310</strong></p>
+          <p>Code #MM3</p>
+
+        </div>
+      </div>
+    </div>
+
+    <br><br>
+    <div class="row text-center">
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M4_197.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$197</strong></p>
+          <p>Code #MM4</p>
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M5_150V.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$150</strong></p>
+          <p>Code #MM5</p>
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M6_170.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$170</strong></p>
+          <p>Code #MM6</p>
+
+        </div>
+      </div>
+    </div>
+
+    <br><br>
+    <div class="row text-center">
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M7_280.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$280</strong></p>
+          <p>Code #MM7</p>
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M8_350.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$350</strong></p>
+          <p>Code #MM8</p>
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M9_290.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$290</strong></p>
+          <p>Code #MM9</p>
+
+        </div>
+      </div>
+    </div>
+
+    <br><br>
+    <div class="row text-center">
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M10_209.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$209</strong></p>
+          <p>Code #MM10</p>
+
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="M11_320.jpg" alt="Paris" width="150" height="100">
+          <p><strong>$320</strong></p>
+          <p>Code #MM11</p>
+
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+  <!---->
+  <br><br>
+  <!-- Used to open the Modal -->
+  <button class="btn" data-toggle="modal" data-target="#myModal">Buy</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4> <span class="glyphicon glyphicon-shopping-cart"></span> THE SAN</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+            <div class="form-group">
+              <label for=""><span class="glyphicon glyphicon-shopping-cart"></span> CODE</label>
+              <input type="" class="form-control" id="psw" placeholder="#">
+            </div>
+            <div class="form-group">
+              <label for=""><span class="glyphicon glyphicon-piggy-bank"></span> NUMBER </label>
+              <input type="t" class="form-control" id="" placeholder=" Number">
+            </div>
+            <button type="submit" class="btn btn-block">Pay
+              <span class="glyphicon glyphicon-ok"></span>
+            </button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br><br>
+
+  <!----->
+
+
+
+  <footer class="text-center">
+    <br><br>
+
+    <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="TO TOP">
+      <p> ข้อมูลเสื้อผ้า <a href="https://th.shein.com/" data-toggle="tooltip" title="Visit w3schools">
+          https:th.shein.com</a></p>
+    </a><br><br>
+
+  </footer>
+
+  <!----->
+</div>
+
+<br><br><br>
+
+</html>
